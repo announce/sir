@@ -1,0 +1,10 @@
+# https://docs.travis-ci.com/user/languages/rust/
+sudo: required
+services:
+- docker
+language: rust
+rust:
+- stable
+script:
+- ./sir lint
+- ./sir run
