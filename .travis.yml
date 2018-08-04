@@ -5,6 +5,8 @@ services:
 language: rust
 rust:
 - stable
+- 1.28.0
 script:
 - ./sir lint
-- ./sir run
+- ./sir cargo version
+- ./sir cargo test

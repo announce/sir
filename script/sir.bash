@@ -22,12 +22,13 @@ sir () {
     docker run --rm -v "$(pwd)":/app -w /app instrumentisto/clippy:0.0.212
   }
 
-  run () {
-    docker run --rm --user "$(id -u)":"$(id -g)" \
+  rust () {
+    docker run --rm --interactive \
+      --user "$(id -u)":"$(id -g)" \
       --env USER="sir" \
-      -v "$PWD":/usr/src/sir \
-      -w /usr/src/sir \
-      rust:1.28.0-stretch cargo run
+      --volume "$PWD":/usr/src/sir \
+      --workdir /usr/src/sir \
+      rust:1.28.0-stretch "$@"
   }
 
   clean () {
@@ -56,10 +57,9 @@ sir () {
   if [ $# = 0 ]; then
     usage
   elif [ "$(type -t "$1")" = "function" ]; then
-    $1
+    $1 "$(shift && echo "$@")"
   else
-    usage
-    error "Command not found."
+    rust "$@"
   fi
 }
 
