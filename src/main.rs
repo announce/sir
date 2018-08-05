@@ -1,7 +1,6 @@
 fn main() {
-  println!("Hello, world!");
+    println!("Hello, world!");
 }
 
 #[cfg(test)]
-mod tests {
-}
+mod tests {}

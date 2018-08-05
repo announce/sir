@@ -8,5 +8,6 @@ rust:
 - 1.28.0
 script:
 - ./sir lint
-- ./sir cargo version
+- ./sir cargo fmt --all -- --check
+- ./sir cargo build
 - ./sir cargo test
