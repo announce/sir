@@ -31,7 +31,7 @@ sir () {
   run () {
     docker run --rm --interactive \
       --user "$(id -u)":"$(id -g)" \
-      --env USER="sir" \
+      --env USER="${USER:-sir}" \
       --volume "$PWD":/usr/src/sir \
       "${TAG_NAME}:${TAG_VERSION}" "$@"
   }

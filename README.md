@@ -7,6 +7,7 @@
 
 ```bash
 alias s="./sir"
+npm run watch
 ```
 
 

@@ -1,13 +1,11 @@
-# https://docs.travis-ci.com/user/languages/rust/
-sudo: required
+# https://docs.travis-ci.com/user/docker/
 services:
-- docker
-language: rust
-rust:
-- stable
-- 1.28.0
+  - docker
+before_install:
+  - sudo chown -R travis:travis .
+  - sudo ./sir build
 script:
-- ./sir lint
-- ./sir cargo fmt --all -- --check
-- ./sir cargo build
-- ./sir cargo test
+  - sudo ./sir cargo fmt --all -- --check
+  - sudo ./sir lint
+  - sudo ./sir cargo build -vv
+  - sudo ./sir cargo test
