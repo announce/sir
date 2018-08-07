@@ -1,0 +1,7 @@
+# https://github.com/announce/sir/
+[package]
+name = "sir"
+version = "0.1.0"
+authors = ["Kenta Yamamoto <ymkjp@jaist.ac.jp>"]
+
+[dependencies]

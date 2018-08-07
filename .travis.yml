@@ -1,0 +1,11 @@
+# https://docs.travis-ci.com/user/docker/
+services:
+  - docker
+before_install:
+  - sudo chown -R travis:travis .
+  - sudo ./sir build
+script:
+  - sudo ./sir cargo fmt --all -- --check
+  - sudo ./sir lint
+  - sudo ./sir cargo build -vv
+  - sudo ./sir cargo test
