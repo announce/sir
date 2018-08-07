@@ -1,6 +1,7 @@
-fn main() {
-    println!("Hello, world!");
-}
+mod scm;
+use scm::parser::Parser;
 
-#[cfg(test)]
-mod tests {}
+fn main() {
+    scm::interpret();
+    Parser::read_from("");
+}
