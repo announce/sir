@@ -8,6 +8,7 @@
     <file url="file://$PROJECT_DIR$/Dockerfile" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/README.md" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/package.json" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/script/notify.bash" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/script/sir.bash" charset="UTF-8" />
     <file url="PROJECT" charset="EUC-JP" />
   </component>
