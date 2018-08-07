@@ -2,17 +2,19 @@
   "name": "sir",
   "description": "[![Build Status](https://travis-ci.org/announce/sir.svg?branch=master)](https://travis-ci.org/announce/sir)",
   "scripts": {
-    "start": "npm run fmt && npm run lint && npm run build && npm run test && ./script/notify.bash",
-    "watch": "npm-run-all --parallel start watch:*",
-    "watch:all": "onchange '*.json' --delay 1000 -- npm start",
-    "watch:docker": "onchange 'Dockerfile' '.dockerignore' --delay 1000 -- ./sir build && ./script/notify.bash docker",
-    "watch:rust": "onchange 'Cargo.toml' 'src/**/*.rs' --delay 1000 -- npm run rust-tasks && ./script/notify.bash rust",
-    "watch:shell": "onchange 'script/**' --delay 1000 -- ./sir lint-shell",
+    "start": "npm run fmt && npm run lint && npm run build && npm run test; ./script/notify.bash $?",
+    "watch": "npm-run-all --parallel watch:*",
+    "watch:all": "onchange --initial '*.json' --delay 1000 -- npm start",
+    "watch:docker": "onchange 'Dockerfile' '.dockerignore' --delay 1000 -- npm run build:docker",
+    "watch:rust": "onchange 'Cargo.toml' 'src/**/*.rs' --delay 1000 -- npm run build:rust",
+    "watch:shell": "onchange 'script/**/*.bash' --delay 1000 -- npm run build:shell",
     "fmt": "./sir cargo fmt --all",
     "lint": "./sir lint",
-    "rust-tasks": "npm run fmt && ./sir lint-rust && npm run build && npm run test",
+    "build:docker": "./sir build; ./script/notify.bash $? docker",
+    "build:shell": "./sir lint-shell; ./script/notify.bash $? shell",
+    "build:rust": "npm run fmt && ./sir lint-rust && npm run build && npm run test; ./script/notify.bash $? rust",
     "build": "./sir cargo build",
-    "test": "./sir cargo test"
+    "test": "./sir cargo test -- --color always --nocapture"
   },
   "devDependencies": {
     "npm-run-all": "^4.1.3",

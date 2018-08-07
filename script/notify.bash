@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
-CURRENT_DATE=$(date +'%Y-%m-%d %I:%M:%S')
-WORKING_DIR=$(basename "$(pwd)")
+readonly CURRENT_DATE=$(date +'%Y-%m-%d %I:%M:%S')
+readonly WORKING_DIR=$(basename "$(pwd)")
 
 if [[ "${OSTYPE}" = "darwin"* ]]; then
-  osascript -e "display notification \"${CURRENT_DATE}\"" with title "${1-${WORKING_DIR}}"
+  osascript -e "display notification \"${CURRENT_DATE}\" with title \"${*-${WORKING_DIR}}\""
 fi
+
+exit "${1-0}"

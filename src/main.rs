@@ -3,5 +3,5 @@ use scm::parser::Parser;
 
 fn main() {
     scm::interpret();
-    Parser::read_from("");
+    Parser::from("");
 }
