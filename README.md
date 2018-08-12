@@ -11,6 +11,8 @@ An interpreter which:
 
 ## Development
 
+Upstream work: [trunk](https://github.com/announce/sir/compare/master...ymkjp:master)
+
 ```bash
 npm run watch
 ```
