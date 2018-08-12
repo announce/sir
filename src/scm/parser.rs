@@ -77,17 +77,17 @@ impl Parser {
                     Some(ref t) if t == BRACKET_CLOSED => SyntaxTree::Node(node),
                     Some(_) => unreachable!(),
                     None => panic!(
-						"An unpaired bracket is detected. Place the sufficient number of {:?} or {:?}.",
+						"An unpaired bracket is detected. Place the sufficient number of `{:}` or `{:}`.",
 						BRACKET_OPEN, BRACKET_CLOSED
 					),
                 }
             }
             Some(ref token) if BRACKET_CLOSED == token => panic!(
-                "Wrong order of brackets. Bracket {:?} must be placed before {:?}.",
+                "Wrong order of brackets. Bracket `{:}` must be placed before `{:}`.",
                 BRACKET_OPEN, BRACKET_CLOSED
             ),
             Some(ref token) => SyntaxTree::Leaf(Parser::atom(token.to_string())),
-            None => panic!("Unexpected EOF was detected."),
+            None => unreachable!("Unexpected EOF was detected."),
         }
     }
 
@@ -138,6 +138,7 @@ mod tests {
     fn parse() {
         let p = Parser::from("()");
         println!("{:?}", p);
+        assert!(p.tree.is_some());
         assert_eq!(p.tree.unwrap(), SyntaxTree::Node(vec![]));
     }
 
@@ -145,6 +146,14 @@ mod tests {
     fn parse_none() {
         let p = Parser::from("");
         assert_eq!(p.tree, None);
+    }
+
+    #[test]
+    fn atom() {
+        match Parser::from("1.1").tree {
+            Some(SyntaxTree::Leaf(Atom::Float(f))) => assert_eq!(f, 1.1),
+            _ => assert!(false, "Got the wrong typpe."),
+        }
     }
 
     #[test]
@@ -164,4 +173,17 @@ mod tests {
         );
     }
 
+    #[test]
+    #[should_panic(
+        expected = "An unpaired bracket is detected. Place the sufficient number of `(` or `)`."
+    )]
+    fn unpaired_bracket() {
+        let _ = Parser::from("((");
+    }
+
+    #[test]
+    #[should_panic(expected = "Wrong order of brackets. Bracket `(` must be placed before `)`.")]
+    fn wrong_order() {
+        let _ = Parser::from(")(");
+    }
 }
