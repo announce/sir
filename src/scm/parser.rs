@@ -5,7 +5,7 @@ pub type Code = String;
 pub type Tokens = Vec<String>;
 pub type NodeElem = Box<SyntaxTree>;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Parser {
     pub code: Code,
     pub tokens: Tokens,
@@ -122,12 +122,37 @@ mod tests {
     }
 
     #[test]
+    fn test_from() {
+        let p1 = Parser::from("()");
+        let mut p2 = Parser::new("()".to_string());
+        p2.tokenize();
+        p2.parse();
+        assert_eq!(p1, p2);
+    }
+
+    #[test]
+    fn test_eq() {
+        let p1 = Parser::from("()");
+        let p2 = Parser::from("()");
+        assert_eq!(p1, p2);
+    }
+
+    #[test]
     fn test_parse() {
-        //	min	"()"
-        let s = "(set! x*2 (* x 2))".to_string();
-        let mut p = Parser::new(s);
-        p.tokenize();
-        p.parse();
+        let p = Parser::from("()");
+        println!("{:?}", p);
+        assert_eq!(p.tree.unwrap(), SyntaxTree::Node(vec![]));
+    }
+
+    #[test]
+    fn test_parse_none() {
+        let p = Parser::from("");
+        assert_eq!(p.tree, None);
+    }
+
+    #[test]
+    fn test_parse_nest() {
+        let p = Parser::from("(set! x*2 (* x 2))");
         assert_eq!(
             p.tree.unwrap(),
             SyntaxTree::Node(vec![
