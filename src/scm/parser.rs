@@ -44,7 +44,7 @@ impl Parser {
 
     // Lexical analysis
     // https://doc.rust-lang.org/std/string/struct.String.html
-    fn tokenize(&mut self) -> &mut Self {
+    fn tokenize(&mut self) -> &Self {
         self.tokens = self
             .code
             .replace(BRACKET_OPEN, &format!(" {} ", BRACKET_OPEN))
@@ -56,7 +56,7 @@ impl Parser {
     }
 
     // Syntactic analysis
-    fn parse(&mut self) -> &mut Self {
+    fn parse(&mut self) -> &Self {
         if !self.tokens.is_empty() {
             self.tokens.reverse();
             self.tree = Some(self.read_from());
@@ -71,10 +71,7 @@ impl Parser {
                 let mut node: Vec<NodeElem> = vec![];
                 while self.tokens.last().is_some() && self.tokens.last().unwrap() != BRACKET_CLOSED
                 {
-                    match self.read_from() {
-                        SyntaxTree::Leaf(a) => node.push(Box::new(SyntaxTree::Leaf(a))),
-                        SyntaxTree::Node(n) => node.push(Box::new(SyntaxTree::Node(n))),
-                    }
+                    node.push(Box::new(self.read_from()));
                 }
                 match self.tokens.pop() {
                     Some(ref t) if t == BRACKET_CLOSED => SyntaxTree::Node(node),
@@ -112,7 +109,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_tokenize() {
+    fn tokenize() {
         let s = "(set! x*2 (* x 2))".to_string();
         let mut p = Parser::new(s);
         assert_eq!(
@@ -122,7 +119,7 @@ mod tests {
     }
 
     #[test]
-    fn test_from() {
+    fn from() {
         let p1 = Parser::from("()");
         let mut p2 = Parser::new("()".to_string());
         p2.tokenize();
@@ -131,27 +128,27 @@ mod tests {
     }
 
     #[test]
-    fn test_eq() {
+    fn eq() {
         let p1 = Parser::from("()");
         let p2 = Parser::from("()");
         assert_eq!(p1, p2);
     }
 
     #[test]
-    fn test_parse() {
+    fn parse() {
         let p = Parser::from("()");
         println!("{:?}", p);
         assert_eq!(p.tree.unwrap(), SyntaxTree::Node(vec![]));
     }
 
     #[test]
-    fn test_parse_none() {
+    fn parse_none() {
         let p = Parser::from("");
         assert_eq!(p.tree, None);
     }
 
     #[test]
-    fn test_parse_nest() {
+    fn parse_nest() {
         let p = Parser::from("(set! x*2 (* x 2))");
         assert_eq!(
             p.tree.unwrap(),
@@ -166,4 +163,5 @@ mod tests {
             ])
         );
     }
+
 }

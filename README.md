@@ -5,8 +5,8 @@
 ## What's this?
 
 An interpreter which:
-* supports a subset of Scheme [R5RS](https://schemers.org/Documents/Standards/R5RS/)
-* runs on browser with the power of rust-wasm
+* supports a subset of Scheme (not strictly meets [R5RS](https://schemers.org/Documents/Standards/R5RS/), though)
+* runs on browsers with the power of rust-wasm
 
 
 ## Development
@@ -25,6 +25,6 @@ npm run watch
 
 ## Thoughts
 
-Random thoughts came across to me during the implementation:
+Random thoughts might come across to you during the implementation:
 
-- Rust shows very user-friendly error messages
+- Follow your heart and compiler; rust compiler shows very user-friendly error messages.
