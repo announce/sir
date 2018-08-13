@@ -27,4 +27,4 @@ npm run watch
 
 Random thoughts might come across to you during the implementation:
 
-- Follow your heart and compiler; rust compiler shows very user-friendly error messages.
+- Follow your heart and compiler; rust compiler shows informative error messages.
