@@ -5,6 +5,7 @@ use std::collections::HashMap;
 pub enum Exp {
     Int(i32),
     Float(f64),
+    Noop(),
     //    Ops(Fn),
 }
 
@@ -34,29 +35,32 @@ impl Env {
         }
     }
 
-    pub fn evaluate(&mut self, tree: SyntaxTree) -> &Exp {
+    pub fn evaluate(&mut self, tree: &mut SyntaxTree) -> &Exp {
         match tree {
             SyntaxTree::Leaf(Atom::Symbol(s)) => self.find(&s),
             SyntaxTree::Leaf(Atom::Float(f)) => {
-                self.global.entry(f.to_string()).or_insert(Exp::Float(f))
+                self.global.entry(f.to_string()).or_insert(Exp::Float(*f))
             }
             SyntaxTree::Leaf(Atom::Int(i)) => {
-                self.global.entry(i.to_string()).or_insert(Exp::Int(i))
+                self.global.entry(i.to_string()).or_insert(Exp::Int(*i))
             }
-            SyntaxTree::Node(mut n) => match n.first() {
-                Some(box SyntaxTree::Leaf(Atom::Symbol(ref s))) if s == "quote" => {
-                    //					@TODO
-                    n.remove(0);
-                    self.evaluate(SyntaxTree::Node(n))
+            SyntaxTree::Node(ref mut n) => {
+                match n.clone.first() {
+                    None => self.global.entry("".to_string()).or_insert(Exp::Noop()),
+                    Some(box SyntaxTree::Leaf(Atom::Symbol(ref s))) if s == "quote" => {
+                        //					@TODO Handle `tree`
+                        n.remove(0);
+                        self.evaluate(tree)
+                    }
+                    //                box SyntaxTree::Leaf(Atom::Symbol(ref s)) if s == "if" => {},
+                    //                box SyntaxTree::Leaf(Atom::Symbol(ref s)) if s == "set!" => {},
+                    //                box SyntaxTree::Leaf(Atom::Symbol(ref s)) if s == "define" => {},
+                    //                box SyntaxTree::Leaf(Atom::Symbol(ref s)) if s == "lambda" => {},
+                    //                box SyntaxTree::Leaf(Atom::Symbol(ref s)) if s == "begin" => {},
+                    //                box SyntaxTree::Leaf(Atom::Symbol(ref s)) if s == "proc" => {},
+                    _ => panic!("Invalid expression."),
                 }
-                //                NodeElem(SyntaxTree::Leaf(Atom::Symbol(ref s))) if s == "if" => {},
-                //                NodeElem(SyntaxTree::Leaf(Atom::Symbol(ref s))) if s == "set!" => {},
-                //                NodeElem(SyntaxTree::Leaf(Atom::Symbol(ref s))) if s == "define" => {},
-                //                NodeElem(SyntaxTree::Leaf(Atom::Symbol(ref s))) if s == "lambda" => {},
-                //                NodeElem(SyntaxTree::Leaf(Atom::Symbol(ref s))) if s == "begin" => {},
-                //                NodeElem(SyntaxTree::Leaf(Atom::Symbol(ref s))) if s == "proc" => {},
-                _ => panic!("Invalid expression."),
-            },
+            }
         }
     }
 }
