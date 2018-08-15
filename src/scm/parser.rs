@@ -16,10 +16,9 @@ pub struct Parser {
 pub enum Atom {
     Int(i32),
     Float(f64),
-    Symbol(String), // @TODO &str
+    Symbol(String),
 }
 
-// @TODO 3-tuple Node or [scm::parser::SyntaxTree; 3]
 #[derive(Debug, PartialEq)]
 pub enum SyntaxTree {
     Leaf(Atom),

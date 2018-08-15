@@ -25,7 +25,8 @@ sir () {
   }
 
   build () {
-    docker build -t "${TAG_NAME}:${TAG_VERSION}" .
+    docker build -t "${TAG_NAME}:${TAG_VERSION}" \
+      --build-arg IMAGE_TAG="rustlang:nightly" .
   }
 
   run () {
