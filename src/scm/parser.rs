@@ -65,6 +65,7 @@ impl Parser {
 
     // Read forwards
     fn read_from(&mut self) -> SyntaxTree {
+        // @TODO Apply the slice pattern https://doc.rust-lang.org/1.8.0/book/slice-patterns.html
         match self.tokens.pop() {
             Some(ref token) if BRACKET_OPEN == token => {
                 let mut node: Vec<NodeElem> = vec![];
@@ -86,7 +87,7 @@ impl Parser {
                 BRACKET_OPEN, BRACKET_CLOSED
             ),
             Some(ref token) => SyntaxTree::Leaf(Parser::atom(token.to_string())),
-            None => unreachable!("Unexpected EOF was detected."),
+            None => unreachable!("Unexpected token was detected."),
         }
     }
 

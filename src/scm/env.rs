@@ -44,23 +44,22 @@ impl Env {
             SyntaxTree::Leaf(Atom::Int(i)) => {
                 self.global.entry(i.to_string()).or_insert(Exp::Int(*i))
             }
-            SyntaxTree::Node(ref mut n) => {
-                match n.clone.first() {
-                    None => self.global.entry("".to_string()).or_insert(Exp::Noop()),
-                    Some(box SyntaxTree::Leaf(Atom::Symbol(ref s))) if s == "quote" => {
-                        //					@TODO Handle `tree`
-                        n.remove(0);
-                        self.evaluate(tree)
-                    }
-                    //                box SyntaxTree::Leaf(Atom::Symbol(ref s)) if s == "if" => {},
-                    //                box SyntaxTree::Leaf(Atom::Symbol(ref s)) if s == "set!" => {},
-                    //                box SyntaxTree::Leaf(Atom::Symbol(ref s)) if s == "define" => {},
-                    //                box SyntaxTree::Leaf(Atom::Symbol(ref s)) if s == "lambda" => {},
-                    //                box SyntaxTree::Leaf(Atom::Symbol(ref s)) if s == "begin" => {},
-                    //                box SyntaxTree::Leaf(Atom::Symbol(ref s)) if s == "proc" => {},
-                    _ => panic!("Invalid expression."),
-                }
+            SyntaxTree::Node(None, ..) => self.global.entry("".to_string()).or_insert(Exp::Noop()),
+            SyntaxTree::Node(
+                box SyntaxTree::Leaf(Atom::Symbol("quote")),
+                n @ box SyntaxTree::Node(..),
+            ) => {
+                n.remove(0);
+                self.evaluate(tree)
             }
+
+            // "if"
+            // "set!"
+            // "define"
+            // "lambda"
+            // "begin"
+            // "proc"
+            _ => panic!("Invalid expression."),
         }
     }
 }
