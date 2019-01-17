@@ -1,4 +1,4 @@
-#![feature(box_syntax, box_patterns, pattern_parentheses)]
+#![feature(box_syntax, box_patterns)]
 mod scm;
 use scm::parser::Parser;
 

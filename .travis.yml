@@ -3,7 +3,7 @@ services:
   - docker
 before_install:
   - sudo chown -R travis:travis .
-  - sudo ./sir build
+  - sudo ./sir build-container
 script:
   - sudo ./sir cargo fmt --all -- --check
   - sudo ./sir lint

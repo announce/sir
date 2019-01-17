@@ -14,7 +14,7 @@ An interpreter which:
 Upstream work: [trunk](https://github.com/announce/sir/compare/master...ymkjp:master)
 
 ```bash
-npm run watch
+yarn run watch
 ```
 
 

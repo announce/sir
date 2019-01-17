@@ -3,7 +3,7 @@
 sir () {
   set -u
   readonly TAG_NAME="announced/sir"
-  readonly TAG_VERSION="1.28.0"
+  readonly TAG_VERSION="0.1.0"
 
   init () {
     :
@@ -24,15 +24,13 @@ sir () {
     docker run --rm -v "$(pwd)":/app -w /app instrumentisto/clippy:0.0.212
   }
 
-  build () {
+  build-container () {
     docker build -t "${TAG_NAME}:${TAG_VERSION}" \
-      --build-arg IMAGE_TAG="rustlang:nightly" .
+      --build-arg IMAGE_TAG="rustlang/rust:nightly" .
   }
 
   run () {
     docker run --rm --interactive \
-      --user "$(id -u)":"$(id -g)" \
-      --env USER="${USER:-sir}" \
       --volume "$PWD":/usr/src/sir \
       "${TAG_NAME}:${TAG_VERSION}" "$@"
   }
@@ -60,9 +58,9 @@ sir () {
     declare -F | awk '{print "\t" $3}' | grep -v "${SELF}"
   }
 
-  if [ $# = 0 ]; then
+  if [[ $# = 0 ]]; then
     usage
-  elif [ "$(type -t "$1")" = "function" ]; then
+  elif [[ "$(type -t "$1")" = "function" ]]; then
     $1 "$(shift && echo "$@")"
   else
     run "$@"
