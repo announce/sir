@@ -4,9 +4,9 @@
 
 ## What's this?
 
-An interpreter which:
-* supports a subset of Scheme (not strictly meets [R5RS](https://schemers.org/Documents/Standards/R5RS/), though)
-* runs on browsers with the power of rust-wasm
+An interpreter which aims to:
+* support a subset of Scheme (not strictly meets [R5RS](https://schemers.org/Documents/Standards/R5RS/), though)
+* run on browsers with the power of rust-wasm
 
 
 ## Development
